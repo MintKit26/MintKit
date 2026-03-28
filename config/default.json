@@ -1,0 +1,31 @@
+{
+  "network": "devnet",
+  "wallet_path": "./deployer_wallet.json",
+
+  "tokenomics": {
+    "total_supply": 1000000000,
+    "liquidity_pct": 50,
+    "float_pct": 45,
+    "treasury_pct": 5,
+    "lock_days": 180,
+    "decimals": 9
+  },
+
+  "buyback": {
+    "trigger_sol": 0.5,
+    "burn_pct": 50,
+    "airdrop_pct": 50,
+    "airdrop_holders": 100
+  },
+
+  "promotion": {
+    "platforms": ["twitter"],
+    "disclose_bot": true,
+    "disclosure": "Bot-managed project. Not financial advice. DYOR."
+  },
+
+  "transparency": {
+    "storage": "local",
+    "log_path": "./transparency_logs/"
+  }
+}

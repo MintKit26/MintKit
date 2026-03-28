@@ -1,0 +1,12 @@
+{
+  "coin_name": "Faded Coin",
+  "ticker": "FADE",
+  "tagline": "For everyone who got faded by their friends but kept building anyway.",
+
+  "total_supply": 1000000000,
+  "liquidity_pct": 50,
+  "float_pct": 45,
+  "treasury_pct": 5,
+  "lock_days": 180,
+  "decimals": 9
+}

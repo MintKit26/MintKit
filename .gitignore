@@ -1,0 +1,27 @@
+# Environment
+.env
+
+# Database
+*.db
+
+# Wallets - NEVER commit these
+*.json
+!coin_config.example.json
+!config/default.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
