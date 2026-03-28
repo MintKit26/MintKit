@@ -324,10 +324,13 @@ def action_treasury(auth=Depends(verify_token)):
     except Exception as e:
         return {"success": False, "message": str(e)}
 
-# ── Serve Public Launchpad ────────────────────────────────
-public_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "public")
-if os.path.exists(public_path):
-    app.mount("/", StaticFiles(directory=public_path, html=True), name="public")
+# ── Serve Static Files ────────────────────────────────────
+_base = os.path.dirname(os.path.abspath(__file__))
+_public = os.path.abspath(os.path.join(_base, "..", "public"))
+_frontend = os.path.join(_base, "frontend")
+_static = _public if os.path.exists(_public) else _frontend
+log.info(f"Serving static files from: {_static}")
+app.mount("/", StaticFiles(directory=_static, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
