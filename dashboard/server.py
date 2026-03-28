@@ -325,9 +325,10 @@ def action_treasury(auth=Depends(verify_token)):
         return {"success": False, "message": str(e)}
 
 # ── Serve Public Launchpad ────────────────────────────────
-public_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "public")
-if os.path.exists(public_path):
-    app.mount("/", StaticFiles(directory=public_path, html=True), name="public")
+public_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public")
+frontend_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend")
+serve_path = public_path if os.path.exists(public_path) else frontend_path
+app.mount("/", StaticFiles(directory=serve_path, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
