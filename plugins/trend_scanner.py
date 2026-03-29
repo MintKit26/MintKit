@@ -27,7 +27,7 @@ SCAN_INTERVAL_HOURS = 6
 MIN_VIABILITY_SCORE = 65
 TOP_N_CANDIDATES    = 3
 TWITTER_MEME_TERMS  = ["meme", "viral", "lol", "based", "ngl", "iykyk"]
-DB_PATH             = "trendmintbot.db"
+DB_PATH             = "mintkit.db"
 
 # ── Data Structure ────────────────────────────────────────
 @dataclass
@@ -50,7 +50,6 @@ def get_db():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
-
 def init_db():
     conn = get_db()
     cur = conn.cursor()
@@ -86,18 +85,19 @@ def init_db():
     log.info("Database ready.")
 
 # ── Clients ───────────────────────────────────────────────
+os.environ["TWITTER_BEARER_TOKEN"] = "AAAAAAAAAAAAAAAAAAAAAMBI8gEAAAAAi5AwXRvzrKVnfwBtdCf8U1bRoBE%3DpADLZPkfU88nLYO8upRhi3TGndziX6JZ5C73nBNhRUpuZWLvGx"
+os.environ["ANTHROPIC_API_KEY"]    = "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"
 def get_twitter_client():
-    bearer = os.getenv("TWITTER_BEARER_TOKEN")
+    bearer = os.environ.get("TWITTER_BEARER_TOKEN", "")
     if not bearer:
-        raise ValueError("TWITTER_BEARER_TOKEN not found in .env file")
+        raise ValueError("TWITTER_BEARER_TOKEN not found")
     return tweepy.Client(bearer_token=bearer, wait_on_rate_limit=True)
 
 def get_claude_client():
-    key = os.getenv("ANTHROPIC_API_KEY")
+    key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not key:
-        raise ValueError("ANTHROPIC_API_KEY not found in .env file")
+        raise ValueError("ANTHROPIC_API_KEY not found")
     return anthropic.Anthropic(api_key=key)
-
 # ── Deduplication ─────────────────────────────────────────
 def make_id(text: str) -> str:
     return hashlib.sha256(text.lower().strip().encode()).hexdigest()[:16]
