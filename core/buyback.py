@@ -1,5 +1,4 @@
 """
-"""
 MintKit — Buyback Engine
 Monitors creator rewards wallet, executes buybacks,
 burns 50% and airdrops 50% to top holders automatically.
