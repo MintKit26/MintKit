@@ -17,12 +17,12 @@ import anthropic
 load_dotenv()
 
 # ── API Keys ─────────────────────────────────────────────
-ANTHROPIC_API_KEY = "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"
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
-DB_PATH = "mintkit.db"
+DB_PATH = "trendmintbot.db"
 
 # ── Data Structure ────────────────────────────────────────
 @dataclass
