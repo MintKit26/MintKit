@@ -38,6 +38,19 @@ def get_db():
 def init_promotions_table():
     conn = get_db()
     cur = conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS deployments (
+        concept_id TEXT PRIMARY KEY, coin_name TEXT, ticker TEXT,
+        mint_address TEXT, deployer_address TEXT, liquidity_wallet TEXT,
+        treasury_wallet TEXT, total_supply INTEGER, network TEXT,
+        deployed_at TEXT, status TEXT, tx_hash TEXT)""")
+    cur.execute("""INSERT OR IGNORE INTO deployments VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        ('mkit001','MintKit','MKIT',
+        'Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP',
+        'ELj8Ju526bbMfM2UEazChPwzcmm6aWF4afpzHd72oG23',
+        'AKYKKc1eDLGdLeenhqVAWh8vmhDhFN1B5SXEV4LyofD6',
+        '3hiuiBF75bGd3Matn67KQXDiZDB5Ukz5EaW9zX9jJVb1',
+        1000000000,'mainnet','2026-03-29T00:00:00','deployed',
+        'GeLGcX4FLjsCCYGDEA7vN8VFQrpbZksNHqppCZQDqqjH4TMK1bQ4c9aQAPretzoPp6dRBniNPcLVpkiBqQuKQiG'))
     cur.execute("""
         CREATE TABLE IF NOT EXISTS promotions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
