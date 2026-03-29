@@ -110,7 +110,7 @@ def build_launch_post(deployment: dict) -> str:
     ticker    = deployment["ticker"]
     coin_name = deployment["coin_name"]
     mint      = deployment["mint_address"]
- NETWORK = os.getenv("NETWORK", "mainnet")
+    network   = os.getenv("NETWORK", "mainnet")
     liq_pct   = deployment.get("liquidity_pct", 50)
 
     explorer = f"https://explorer.solana.com/address/{mint}"
