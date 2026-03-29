@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 # ── Config ────────────────────────────────────────────────
 DEVNET_URL          = "https://api.devnet.solana.com"
 MAINNET_URL         = "https://api.mainnet-beta.solana.com"
-NETWORK             = os.getenv("NETWORK", "mainnet")
+NETWORK = os.getenv("NETWORK", "mainnet")
 RPC_URL             = DEVNET_URL if NETWORK == "devnet" else MAINNET_URL
 
 BUYBACK_TRIGGER_SOL = 0.5       # trigger buyback when wallet reaches this
@@ -81,6 +81,19 @@ def save_buyback(concept_id, ticker, trigger_balance, tokens_bought,
                  burn_tx, airdrop_tx, status):
     conn = get_db()
     cur = conn.cursor()
+                     cur.execute("""CREATE TABLE IF NOT EXISTS deployments (
+        concept_id TEXT PRIMARY KEY, coin_name TEXT, ticker TEXT,
+        mint_address TEXT, deployer_address TEXT, liquidity_wallet TEXT,
+        treasury_wallet TEXT, total_supply INTEGER, network TEXT,
+        deployed_at TEXT, status TEXT, tx_hash TEXT)""")
+    cur.execute("""INSERT OR IGNORE INTO deployments VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        ('mkit001','MintKit','MKIT',
+        'Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP',
+        'ELj8Ju526bbMfM2UEazChPwzcmm6aWF4afpzHd72oG23',
+        'AKYKKc1eDLGdLeenhqVAWh8vmhDhFN1B5SXEV4LyofD6',
+        '3hiuiBF75bGd3Matn67KQXDiZDB5Ukz5EaW9zX9jJVb1',
+        1000000000,'mainnet','2026-03-29T00:00:00','deployed',
+        'GeLGcX4FLjsCCYGDEA7vN8VFQrpbZksNHqppCZQDqqjH4TMK1bQ4c9aQAPretzoPp6dRBniNPcLVpkiBqQuKQiG'))
     cur.execute("""
         INSERT INTO buybacks
         (concept_id, ticker, trigger_balance, tokens_bought, tokens_burned,
