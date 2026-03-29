@@ -102,33 +102,23 @@ def check_and_execute_buyback(deployment: dict, client: Client):
     treasury_wallet_path = f"wallet_{ticker.lower()}_treasury.json"
     treasury = load_wallet(treasury_wallet_path)
     if not treasury:
-        log.warning(f"Treasury wallet not found for {ticker}. Skipping.")
+        log.warning(f"[{ticker}] Treasury wallet not found. Skipping.")
         return
     balance = get_sol_balance(client, treasury.pubkey())
     log.info(f"[{ticker}] Treasury balance: {balance:.4f} SOL")
     if balance < BUYBACK_TRIGGER_SOL:
-        log.info(f"[{ticker}] Below trigger threshold ({BUYBACK_TRIGGER_SOL} SOL). Skipping.")
+        log.info(f"[{ticker}] Below trigger threshold. Skipping.")
         return
-    log.info(f"[{ticker}] Trigger threshold reached! Executing buyback...")
+    log.info(f"[{ticker}] Trigger reached! Executing buyback...")
     total_tokens_bought = int(balance * 1_000_000)
     tokens_to_burn      = int(total_tokens_bought * (BURN_PCT / 100))
     tokens_to_airdrop   = total_tokens_bought - tokens_to_burn
-    log.info(f"[{ticker}] Tokens to burn:    {tokens_to_burn:,}")
-    log.info(f"[{ticker}] Tokens to airdrop: {tokens_to_airdrop:,}")
     burn_tx    = f"BURN_{ticker}_{int(time.time())}"
     airdrop_tx = f"AIRDROP_{ticker}_{int(time.time())}"
-    save_buyback(
-        concept_id=concept_id,
-        ticker=ticker,
-        trigger_balance=balance,
-        tokens_bought=total_tokens_bought,
-        tokens_burned=tokens_to_burn,
-        tokens_airdropped=tokens_to_airdrop,
-        holder_count=AIRDROP_HOLDERS,
-        burn_tx=burn_tx,
-        airdrop_tx=airdrop_tx,
-        status="executed"
-    )
+    save_buyback(concept_id=concept_id, ticker=ticker, trigger_balance=balance,
+        tokens_bought=total_tokens_bought, tokens_burned=tokens_to_burn,
+        tokens_airdropped=tokens_to_airdrop, holder_count=AIRDROP_HOLDERS,
+        burn_tx=burn_tx, airdrop_tx=airdrop_tx, status="executed")
     log.info(f"[{ticker}] Buyback complete!")
 
 def run_buyback_engine():
