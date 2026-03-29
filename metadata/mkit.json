@@ -1,0 +1,12 @@
+{
+  "name": "MintKit",
+  "symbol": "MKIT",
+  "description": "The toolkit that launched itself — transparent by design.",
+  "image": "https://raw.githubusercontent.com/MintKit26/MintKit/main/images/mkit_logo.svg",
+  "external_url": "https://github.com/MintKit26/MintKit",
+  "attributes": [
+    {"trait_type": "Network", "value": "Solana"},
+    {"trait_type": "Type", "value": "Utility"},
+    {"trait_type": "Launched By", "value": "MintKit"}
+  ]
+}
