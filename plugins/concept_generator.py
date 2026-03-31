@@ -22,7 +22,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
-DB_PATH = "trendmintbot.db"
+DB_PATH = "mintkit.db"
 
 # ── Data Structure ────────────────────────────────────────
 @dataclass
