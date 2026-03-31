@@ -22,7 +22,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
-DB_PATH = "trendmintbot.db"
+DB_PATH = "mintkit.db"
 
 # ── Data Structure ────────────────────────────────────────
 @dataclass
@@ -47,6 +47,11 @@ def get_db():
 def init_concepts_table():
     conn = get_db()
     cur = conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS meme_trends (
+        id TEXT PRIMARY KEY, source TEXT, title TEXT, description TEXT,
+        url TEXT, image_url TEXT, raw_score REAL, velocity_score REAL,
+        novelty_score REAL, longevity_score REAL, viability_score REAL,
+        discovered_at TEXT, used_for_coin INTEGER DEFAULT 0, created_at TEXT)""")
     cur.execute("""
         CREATE TABLE IF NOT EXISTS coin_concepts (
             id TEXT PRIMARY KEY,
