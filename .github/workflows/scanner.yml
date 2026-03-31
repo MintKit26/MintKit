@@ -23,19 +23,41 @@ jobs:
           python -m pip install --upgrade pip
           pip install tweepy anthropic python-dotenv schedule solana solders anchorpy
 
-      - name: Initialize database tables
+      - name: Initialize database
         run: |
-          python -c "
+          python - <<'PYEOF'
           import sqlite3
           conn = sqlite3.connect('mintkit.db')
           cur = conn.cursor()
-          cur.execute('''CREATE TABLE IF NOT EXISTS meme_trends (id TEXT PRIMARY KEY, source TEXT, title TEXT, description TEXT, url TEXT, image_url TEXT, raw_score REAL, velocity_score REAL, novelty_score REAL, longevity_score REAL, viability_score REAL, discovered_at TEXT, used_for_coin INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime(\"now\")))''')
-          cur.execute('''CREATE TABLE IF NOT EXISTS scan_runs (id INTEGER PRIMARY KEY AUTOINCREMENT, run_at TEXT DEFAULT (datetime(\"now\")), trends_found INTEGER, top_candidates TEXT, status TEXT)''')
-          cur.execute('''CREATE TABLE IF NOT EXISTS coin_concepts (id TEXT PRIMARY KEY, trend_title TEXT, coin_name TEXT, ticker TEXT, tagline TEXT, backstory TEXT, image_prompt TEXT, viability_score REAL, created_at TEXT, approved INTEGER DEFAULT 0)''')
+          cur.execute("""CREATE TABLE IF NOT EXISTS meme_trends (
+              id TEXT PRIMARY KEY, source TEXT, title TEXT, description TEXT,
+              url TEXT, image_url TEXT, raw_score REAL, velocity_score REAL,
+              novelty_score REAL, longevity_score REAL, viability_score REAL,
+              discovered_at TEXT, used_for_coin INTEGER DEFAULT 0, created_at TEXT)""")
+          cur.execute("""CREATE TABLE IF NOT EXISTS scan_runs (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              run_at TEXT, trends_found INTEGER, top_candidates TEXT, status TEXT)""")
+          cur.execute("""CREATE TABLE IF NOT EXISTS coin_concepts (
+              id TEXT PRIMARY KEY, trend_title TEXT, coin_name TEXT, ticker TEXT,
+              tagline TEXT, backstory TEXT, image_prompt TEXT, viability_score REAL,
+              created_at TEXT, approved INTEGER DEFAULT 0)""")
+          cur.execute("""CREATE TABLE IF NOT EXISTS deployments (
+              concept_id TEXT PRIMARY KEY, coin_name TEXT, ticker TEXT,
+              mint_address TEXT, deployer_address TEXT, liquidity_wallet TEXT,
+              treasury_wallet TEXT, total_supply INTEGER, network TEXT,
+              deployed_at TEXT, status TEXT, tx_hash TEXT)""")
+          cur.execute("""INSERT OR IGNORE INTO deployments VALUES (
+              'mkit001','MintKit','MKIT',
+              'Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP',
+              'ELj8Ju526bbMfM2UEazChPwzcmm6aWF4afpzHd72oG23',
+              'AKYKKc1eDLGdLeenhqVAWh8vmhDhFN1B5SXEV4LyofD6',
+              '3hiuiBF75bGd3Matn67KQXDiZDB5Ukz5EaW9zX9jJVb1',
+              1000000000,'mainnet','2026-03-29T00:00:00','deployed',
+              'GeLGcX4FLjsCCYGDEA7vN8VFQrpbZksNHqppCZQDqqjH4TMK1bQ4c9aQAPretzoPp6dRBniNPcLVpkiBqQuKQiG')""")
           conn.commit()
           conn.close()
-          print('Tables created!')
-          "
+          print('Database initialized!')
+          PYEOF
 
       - name: Run trend scanner
         env:
