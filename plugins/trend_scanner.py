@@ -24,10 +24,10 @@ log = logging.getLogger(__name__)
 
 # ── Settings ──────────────────────────────────────────────
 SCAN_INTERVAL_HOURS = 6
-MIN_VIABILITY_SCORE = 65
+MIN_VIABILITY_SCORE = 20
 TOP_N_CANDIDATES    = 3
 TWITTER_MEME_TERMS  = ["meme", "viral", "lol", "based", "ngl", "iykyk"]
-DB_PATH             = "trendmintbot.db"
+DB_PATH             = "mintkit.db"
 
 # ── Data Structure ────────────────────────────────────────
 @dataclass
@@ -69,13 +69,13 @@ def init_db():
             viability_score REAL,
             discovered_at TEXT,
             used_for_coin INTEGER DEFAULT 0,
-            created_at TEXT DEFAULT (datetime('now'))
+            created_at TEXT
         )
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS scan_runs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            run_at TEXT DEFAULT (datetime('now')),
+            run_at TEXT,
             trends_found INTEGER,
             top_candidates TEXT,
             status TEXT
@@ -89,13 +89,13 @@ def init_db():
 def get_twitter_client():
     bearer = os.getenv("TWITTER_BEARER_TOKEN")
     if not bearer:
-        raise ValueError("TWITTER_BEARER_TOKEN not found in .env file")
+        raise ValueError("TWITTER_BEARER_TOKEN not found")
     return tweepy.Client(bearer_token=bearer, wait_on_rate_limit=True)
 
 def get_claude_client():
     key = os.getenv("ANTHROPIC_API_KEY")
     if not key:
-        raise ValueError("ANTHROPIC_API_KEY not found in .env file")
+        raise ValueError("ANTHROPIC_API_KEY not found")
     return anthropic.Anthropic(api_key=key)
 
 # ── Deduplication ─────────────────────────────────────────
@@ -169,7 +169,7 @@ def scan_twitter(client: tweepy.Client, claude: anthropic.Anthropic) -> list:
                 metrics.get("reply_count", 0)
             )
 
-            if engagement < 200:
+            if engagement < 100:
                 continue
 
             trend_id = make_id(tweet.text)
@@ -214,8 +214,8 @@ def save_trends(trends: list):
         cur.execute("""
             INSERT OR IGNORE INTO meme_trends
             (id, source, title, description, url, image_url,
-             raw_score, velocity_score, novelty_score, longevity_score,
-             viability_score, discovered_at)
+            raw_score, velocity_score, novelty_score, longevity_score,
+            viability_score, discovered_at)
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         """, (
             t.id, t.source, t.title, t.description, t.url, t.image_url,
@@ -229,8 +229,8 @@ def log_scan_run(count: int, top: list, status: str):
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
-        "INSERT INTO scan_runs (trends_found, top_candidates, status) VALUES (?,?,?)",
-        (count, json.dumps([asdict(t) for t in top]), status)
+        "INSERT INTO scan_runs (run_at, trends_found, top_candidates, status) VALUES (?,?,?,?)",
+        (datetime.utcnow().isoformat(), count, json.dumps([asdict(t) for t in top]), status)
     )
     conn.commit()
     conn.close()
@@ -239,6 +239,7 @@ def log_scan_run(count: int, top: list, status: str):
 def run_scan():
     log.info("=" * 50)
     log.info("Starting scan cycle...")
+    init_db()
 
     try:
         twitter = get_twitter_client()
