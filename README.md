@@ -198,15 +198,15 @@ All MintKit behavior is controlled by a single config file:
 - [x] Trend Scanner
 - [x] Concept Generator
 - [x] SPL Token Deployer (devnet)
-- [ ] Liquidity Pool Creation (Raydium)
-- [ ] LP Locking
-- [ ] Buyback Engine
-- [ ] Promotion Bot
-- [ ] Treasury Manager
-- [ ] CLI Interface
-- [ ] Web Dashboard
-- [ ] Mainnet Launch
-- [ ] Multi-chain Support (Base, ETH L2)
+- [x] Liquidity Pool Creation (Raydium)
+- [x] LP Locking
+- [x] Buyback Engine
+- [x] Promotion Bot
+- [x] Treasury Manager
+- [x] CLI Interface
+- [x] Web Dashboard
+- [x] Mainnet Launch
+- [x] Multi-chain Support (Base, ETH L2)
 
 ---
 
