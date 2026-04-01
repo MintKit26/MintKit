@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MintKit ($MKIT) — The Toolkit That Launched Itself</title>
+  <meta name="description" content="$MKIT is the first token launched by its own toolkit. Transparent tokenomics, locked liquidity, automatic buybacks. Built on Solana." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #ffffff; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 10; }
+    .nav-brand { font-size: 20px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .nav-ticker { background: #C97B10; color: #fff; font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; }
+    .nav-links a:hover { color: #fff; }
+    .nav-btn { background: #C97B10; color: #fff; padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .hero { text-align: center; padding: 80px 24px 60px; max-width: 800px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(201,123,16,0.2); border: 1px solid rgba(201,123,16,0.4); color: #F59E0B; font-size: 13px; padding: 4px 14px; border-radius: 99px; margin-bottom: 24px; }
+    .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.15; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #F59E0B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn-primary { background: #C97B10; color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); }
+    .coin-logo { width: 120px; height: 120px; background: #C97B10; border: 4px solid #E08B20; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 52px; font-weight: 900; color: #fff; margin: 0 auto 32px; }
+    .contract-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; display: inline-flex; align-items: center; gap: 12px; }
+    .contract-label { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .contract-address { font-size: 13px; font-family: monospace; color: #F59E0B; word-break: break-all; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto 80px; padding: 0 24px; }
+    .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; text-align: center; }
+    .stat-value { font-size: 28px; font-weight: 700; color: #F59E0B; margin-bottom: 6px; }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+    .section { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .section-tag { font-size: 12px; font-weight: 600; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .section-title { font-size: 32px; font-weight: 700; margin-bottom: 16px; }
+    .section-desc { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 40px; }
+    .tokenomics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .tcard { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; }
+    .tcard-pct { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+    .tcard-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .tcard-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .step-num { width: 40px; height: 40px; background: #C97B10; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; margin-bottom: 14px; }
+    .step-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .step-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .verify-section { background: rgba(201,123,16,0.08); border: 1px solid rgba(201,123,16,0.3); border-radius: 16px; padding: 32px; margin-top: 40px; }
+    .verify-title { font-size: 18px; font-weight: 700; color: #F59E0B; margin-bottom: 12px; }
+    .verify-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .verify-link { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; }
+    .cta { text-align: center; padding: 80px 24px; background: rgba(201,123,16,0.08); border-top: 1px solid rgba(201,123,16,0.2); border-bottom: 1px solid rgba(201,123,16,0.2); }
+    .cta h2 { font-size: 36px; font-weight: 700; margin-bottom: 16px; }
+    .cta p { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+    footer { text-align: center; padding: 40px 24px; color: rgba(255,255,255,0.3); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .disclaimer { font-size: 11px; margin-top: 12px; color: rgba(255,255,255,0.2); }
+    @media (max-width: 600px) { .hero h1 { font-size: 32px; } .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MintKit <span class="nav-ticker">$MKIT</span></div>
+  <div class="nav-links">
+    <a href="#tokenomics">Tokenomics</a>
+    <a href="#how">How it works</a>
+    <a href="#verify">Verify</a>
+    <a href="https://github.com/MintKit26/MintKit" target="_blank">GitHub</a>
+    <a href="https://twitter.com/JMHMsr" target="_blank">Twitter</a>
+  </div>
+  <a href="https://explorer.solana.com/address/Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP" target="_blank" class="nav-btn">View on Explorer</a>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Live on Solana Mainnet</div>
+  <div class="coin-logo">M</div>
+  <h1>The toolkit that<br>launched itself</h1>
+  <p>$MKIT is the first token deployed by its own open source toolkit. Locked liquidity, automatic buybacks, transparent tokenomics — all verifiable on-chain.</p>
+  <div class="hero-buttons">
+    <a href="https://raydium.io" target="_blank" class="btn-primary">Buy $MKIT</a>
+    <a href="https://explorer.solana.com/address/Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP" target="_blank" class="btn-secondary">View on Explorer</a>
+  </div>
+  <div class="contract-box">
+    <div>
+      <div class="contract-label">Contract Address</div>
+      <div class="contract-address">Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP</div>
+    </div>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat-card"><div class="stat-value">650M</div><div class="stat-label">Total Supply</div></div>
+  <div class="stat-card"><div class="stat-value">50%</div><div class="stat-label">Liquidity Locked</div></div>
+  <div class="stat-card"><div class="stat-value">180</div><div class="stat-label">Days LP Locked</div></div>
+  <div class="stat-card"><div class="stat-value">Auto</div><div class="stat-label">Buyback Engine</div></div>
+  <div class="stat-card"><div class="stat-value">0%</div><div class="stat-label">Dev Holdings</div></div>
+</div>
+<div class="section" id="tokenomics">
+  <div class="section-tag">Tokenomics</div>
+  <div class="section-title">Fair, transparent, on-chain</div>
+  <div class="section-desc">Every allocation is set at launch and publicly verifiable. No hidden wallets. No insider advantage.</div>
+  <div class="tokenomics-grid">
+    <div class="tcard"><div class="tcard-pct" style="color:#F59E0B;">50%</div><div class="tcard-title">Liquidity Pool</div><div class="tcard-desc">Locked for 180 days minimum. Verifiable on-chain.</div></div>
+    <div class="tcard"><div class="tcard-pct" style="color:#34d399;">45%</div><div class="tcard-title">Public Float</div><div class="tcard-desc">Free market trading from day one.</div></div>
+    <div class="tcard"><div class="tcard-pct" style="color:#f87171;">🔥</div><div class="tcard-title">350M Burned</div><div class="tcard-desc">350 million tokens burned at launch permanently.</div></div>
+    <div class="tcard"><div class="tcard-pct" style="color:#818CF8;">Auto</div><div class="tcard-title">Buyback Engine</div><div class="tcard-desc">50% of buybacks burned forever. 50% airdropped to holders.</div></div>
+  </div>
+</div>
+<div class="section" id="how">
+  <div class="section-tag">How it works</div>
+  <div class="section-title">Built differently</div>
+  <div class="section-desc">MintKit removes human greed from the equation. The rules are set at launch and the bot follows them — no exceptions.</div>
+  <div class="steps-grid">
+    <div><div class="step-num">1</div><div class="step-title">Deployed by code</div><div class="step-desc">$MKIT was deployed using MintKit — an open source Solana token launch toolkit.</div></div>
+    <div><div class="step-num">2</div><div class="step-title">Liquidity locked</div><div class="step-desc">50% of supply locked in liquidity for 180 days. Nobody can remove it.</div></div>
+    <div><div class="step-num">3</div><div class="step-title">Mint revoked</div><div class="step-desc">Mint authority revoked at launch. Supply is fixed at 650M forever.</div></div>
+    <div><div class="step-num">4</div><div class="step-title">Bot runs buybacks</div><div class="step-desc">Automatic buybacks run on-chain. Burns and airdrops happen as coded.</div></div>
+    <div><div class="step-num">5</div><div class="step-title">Everything verifiable</div><div class="step-desc">Every transaction publicly visible on Solana Explorer. Code is open source.</div></div>
+  </div>
+</div>
+<div class="section" id="verify">
+  <div class="verify-section">
+    <div class="verify-title">Verify everything on-chain</div>
+    <p style="color:rgba(255,255,255,0.6); font-size:14px; line-height:1.6;">$MKIT is fully transparent. Every wallet, every transaction, every buyback is publicly visible. Don't trust — verify.</p>
+    <div class="verify-links">
+      <a href="https://explorer.solana.com/address/Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP" target="_blank" class="verify-link">Token on Explorer</a>
+      <a href="https://github.com/MintKit26/MintKit" target="_blank" class="verify-link">Source Code</a>
+      <a href="https://twitter.com/JMHMsr" target="_blank" class="verify-link">@JMHMsr</a>
+      <a href="https://dexscreener.com/solana/Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP" target="_blank" class="verify-link">DEX Screener</a>
+    </div>
+    <div style="margin-top:20px; padding:16px; background:rgba(0,0,0,0.3); border-radius:10px;">
+      <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:6px;">Mint Address</div>
+      <div style="font-family:monospace; font-size:13px; color:#F59E0B; word-break:break-all;">Hkwj68C2EtdwmcAohej9XLhowf3E9WPuVPsiTk5FAXAP</div>
+    </div>
+  </div>
+</div>
+<div class="cta">
+  <h2>Join the $MKIT community</h2>
+  <p>The first token launched by its own toolkit. Transparent by design.</p>
+  <div class="hero-buttons">
+    <a href="https://raydium.io" target="_blank" class="btn-primary">Buy $MKIT on Raydium</a>
+    <a href="https://twitter.com/JMHMsr" target="_blank" class="btn-secondary">Follow @JMHMsr</a>
+  </div>
+</div>
+<footer>
+  <p>MintKit ($MKIT) — Built by <a href="https://twitter.com/JMHMsr">@JMHMsr</a> · <a href="https://github.com/MintKit26/MintKit">GitHub</a></p>
+  <p class="disclaimer">Not financial advice. Cryptocurrency is highly speculative. Always DYOR. Never invest more than you can afford to lose.</p>
+</footer>
+</body>
+                                           </html>
